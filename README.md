@@ -1,2 +1,2 @@
-# ok_api_sdk
-SDK for OK OpenAPI platform
+# ok_api_sdk_go
+Golang SDK for OK OpenAPI platform
