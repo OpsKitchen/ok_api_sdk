@@ -3,41 +3,47 @@ package OkApi
 import (
 	"net/http"
 	"log"
+	"io/ioutil"
+	"encoding/json"
 )
 
 type Client struct {
-	Config     *Config
-	Credential *Credential
-	HttpClient *http.Client
-	Logger	   *log.Logger
+	HttpClient     *http.Client
+	Logger         *log.Logger
+	RequestBuilder *RequestBuilder
 }
 
 func NewClient() *Client {
 	return &Client{
-		HttpClient: http.DefaultClient,
+		HttpClient: &http.DefaultClient,
 	}
 }
 
-func (req *Client) SetCredential(credential Credential) *Client {
-	req.Credential = &credential
-	return req
+func (c *Client) SetLogger(logger *log.Logger) *Client {
+	c.Logger = &logger
+	return c
 }
 
-func (req *Client) SetConfig(config Config) *Client {
-	req.Config = &config
-	return req
-}
+func (c *Client) CallApi(api string, version string, params interface{}) *ApiResult  {
+	var request http.Request = c.RequestBuilder.Build(api, version, params)
+	var response, err = c.HttpClient.Do(request)
+	var apiResult ApiResult
 
-func (req *Client) SetHttpClient(httpClient *http.Client) *Client {
-	req.HttpClient = &httpClient
-	return req
-}
+	if err != nil {
+		c.Logger.Fatal("Do http request failed: " + api + " " + version)
+		return nil, err
+	}
+	defer response.Body.Close()
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		c.Logger.Fatal("Read response body failed: " + api + " " + version)
+		return nil, err
+	}
 
-func (req *Client) SetLogger(config *log.Logger) *Client {
-	req.Logger = &config
-	return req
-}
-
-func (req Client) Request(api string, version string, params interface{})  {
-
+	err = json.Unmarshal([]byte(body), &apiResult)
+	if err != nil {
+		c.Logger.Fatal("Json decode failed: " + api + " " + version)
+		return nil, err
+	}
+	return apiResult, nil
 }
