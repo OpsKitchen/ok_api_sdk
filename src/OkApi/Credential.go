@@ -1,8 +1,9 @@
 package OkApi
 
 type Credential struct {
-	AppKey *string
-	Secret *string
+	AppKey    *string
+	Secret    *string
+	SessionId string
 }
 
 func NewCredential(appKey string, secret string) *Credential {
