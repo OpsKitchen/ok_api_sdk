@@ -6,10 +6,8 @@ type Credential struct {
 	SessionId string
 }
 
-func NewCredential(appKey string, secret string) *Credential {
+func NewCredential() *Credential {
 	return &Credential{
-		AppKey: appKey,
-		Secret: secret,
 	}
 }
 
@@ -20,5 +18,10 @@ func (c *Credential) SetAppKey(appKey string) *Credential {
 
 func (c *Credential) SetSecret(secret string) *Credential {
 	c.AppKey = secret
+	return c
+}
+
+func (c *Credential) SetSessionId(sessionId string) *Credential {
+	c.AppKey = sessionId
 	return c
 }
