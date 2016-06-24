@@ -9,6 +9,7 @@ import (
 	"crypto/md5"
 	"io"
 	"fmt"
+	"strings"
 )
 
 type RequestBuilder struct {
@@ -21,17 +22,19 @@ func NewRequestBuilder() *RequestBuilder {
 }
 
 func (rb *RequestBuilder) Build(api string, version string, params interface{}) *http.Request {
-	var req http.Request
+	var req *http.Request
 	var paramJson string
-	paramJson, err := json.Marshal(params)
-	if err != nil {
-		panic("param json encode failed: " + err.Error())
-	}
-	var timestamp string = rb.getTimestamp()
+	var timestamp string
+
+	paramJson = rb.getParamsJson(params)
+	timestamp = rb.getTimestamp()
 
 	//init http request
-	req = http.NewRequest(rb.Config.HttpMethod, rb.getGatewayUrl(),
-		rb.getPostBody(api, version, paramJson, timestamp))
+	req, err := http.NewRequest(rb.Config.HttpMethod, rb.getGatewayUrl(),
+		strings.NewReader(rb.getPostBody(api, version, paramJson, timestamp)))
+	if err != nil {
+
+	}
 
 	//set headers
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
@@ -50,24 +53,27 @@ func (rb *RequestBuilder) getDeviceId() string {
 	if err != nil {
 		panic("No net interface found: " + err.Error())
 	}
-	for _, netInterface := range interfaces {
-		return  netInterface.HardwareAddr
-	}
+	return  interfaces[0].HardwareAddr.String()
+
 }
 
 func (rb *RequestBuilder) getGatewayUrl() string {
 	var prefix string;
-	if Config.DisableSSL {
+	if rb.Config.DisableSSL {
 		prefix = "http://"
 	} else {
 		prefix = "https://"
 	}
 
-	return prefix + Config.GatewayHost + "/gw/json";
+	return prefix + rb.Config.GatewayHost + "/gw/json";
 }
 
 func (rb *RequestBuilder) getParamsJson(v interface{}) string {
-	return json.Marshal(v)
+	jsonBytes, err := json.Marshal(v)
+	if err != nil {
+		panic("param json encode failed: " + err.Error())
+	}
+	return string(jsonBytes)
 }
 
 func (rb *RequestBuilder) getPostBody(api string, version string, paramJson string, timestamp string) string {

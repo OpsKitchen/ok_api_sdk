@@ -15,16 +15,18 @@ type Client struct {
 
 func NewClient() *Client {
 	return &Client{
-		HttpClient: &http.DefaultClient,
+		HttpClient: http.DefaultClient,
 		RequestBuilder: &RequestBuilder{},
 	}
 }
 
-func (c *Client) CallApi(api string, version string, params interface{}) *ApiResult  {
-	var request http.Request = c.RequestBuilder.Build(api, version, params)
-	var response, err = c.HttpClient.Do(request)
-	var apiResult ApiResult
+func (c *Client) CallApi(api string, version string, params interface{}) (*ApiResult, error)  {
+	var request *http.Request
+	var response *http.Response
+	var apiResult *ApiResult
 
+	request = c.RequestBuilder.Build(api, version, params)
+	response, err := c.HttpClient.Do(request)
 	if err != nil {
 		c.Logger.Fatal("Do http request failed: " + api + " " + version)
 		return nil, err
