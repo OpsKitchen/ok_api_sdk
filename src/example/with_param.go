@@ -24,10 +24,14 @@ func main() {
 	client.RequestBuilder.Config = config
 	client.RequestBuilder.Credential = credential
 
-	//init user
-	resp, err := client.CallApi("ops.meta.os.list", "1.0", nil)
+	//query param
+	param := make(map[string]string)
+	param["osReleaseId"] = "3022"
+
+	//call api
+	resp, err := client.CallApi("ops.meta.osImage.listByOsReleaseId", "1.0", param)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	fmt.Println(resp)
+	fmt.Println(resp.Data)
 }
