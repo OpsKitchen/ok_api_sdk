@@ -33,7 +33,7 @@ func (rb *RequestBuilder) Build(api string, version string, params interface{}) 
 	req, err := http.NewRequest(rb.Config.HttpMethod, rb.getGatewayUrl(),
 		strings.NewReader(rb.getPostBody(api, version, paramJson, timestamp)))
 	if err != nil {
-
+		panic("Create http request failed: " + err.Error())
 	}
 
 	//set headers
@@ -49,12 +49,12 @@ func (rb *RequestBuilder) Build(api string, version string, params interface{}) 
 }
 
 func (rb *RequestBuilder) getDeviceId() string {
+	return "test"
 	interfaces, err :=  net.Interfaces()
 	if err != nil {
 		panic("No net interface found: " + err.Error())
 	}
 	return  interfaces[0].HardwareAddr.String()
-
 }
 
 func (rb *RequestBuilder) getGatewayUrl() string {
@@ -64,7 +64,6 @@ func (rb *RequestBuilder) getGatewayUrl() string {
 	} else {
 		prefix = "https://"
 	}
-
 	return prefix + rb.Config.GatewayHost + "/gw/json";
 }
 
