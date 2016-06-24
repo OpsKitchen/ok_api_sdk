@@ -1,7 +1,8 @@
 package sdk
 
 type ApiResult struct {
-	Success   *bool
-	ErrorCode string
-	Data      interface{}
+	Success      *bool
+	ErrorCode    string
+	ErrorMessage string
+	Data         interface{}
 }

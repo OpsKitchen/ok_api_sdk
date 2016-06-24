@@ -17,10 +17,6 @@ type RequestBuilder struct {
 	Credential *Credential
 }
 
-func NewRequestBuilder() *RequestBuilder {
-	return &RequestBuilder{}
-}
-
 func (rb *RequestBuilder) Build(api string, version string, params interface{}) *http.Request {
 	var req *http.Request
 	var paramJson string
@@ -49,12 +45,11 @@ func (rb *RequestBuilder) Build(api string, version string, params interface{}) 
 }
 
 func (rb *RequestBuilder) getDeviceId() string {
-	return "test"
 	interfaces, err :=  net.Interfaces()
 	if err != nil {
 		panic("No net interface found: " + err.Error())
 	}
-	return  interfaces[0].HardwareAddr.String()
+	return  interfaces[1].HardwareAddr.String()
 }
 
 func (rb *RequestBuilder) getGatewayUrl() string {

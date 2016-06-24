@@ -5,7 +5,6 @@ import (
 	"log"
 	"io/ioutil"
 	"encoding/json"
-	"fmt"
 )
 
 type Client struct {
@@ -41,8 +40,7 @@ func (c *Client) CallApi(api string, version string, params interface{}) (*ApiRe
 
 	err = json.Unmarshal(body, &apiResult)
 	if err != nil {
-		fmt.Println(string(body))
-		//c.Logger.Fatal("Json decode failed: " + api + " " + version)
+		c.Logger.Fatal("Json decode failed: " + api + " " + version)
 		return nil, err
 	}
 	return apiResult, nil
