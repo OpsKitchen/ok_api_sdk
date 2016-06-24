@@ -8,18 +8,18 @@ func main() {
 	var client sdk.Client = sdk.NewClient()
 
 	//init config
-	config.SetAppVersionValue("1.0.1")
-	config.SetAppMarketIdValue("678")
+	config.AppVersionValue = "1.0.1"
+	config.AppMarketIdValue = "678"
 
 	//init credential
-	credential.SetAppKey("1234567")
-	credential.SetSecret("S#$%^&UJHVF")
+	credential.AppKey = "1234567"
+	credential.Secret = "S#$%^&UJHVF"
 
 	//init client
-	client.RequestBuilder.SetConfig(config)
-	client.RequestBuilder.SetCredential(credential)
+	client.RequestBuilder.Config = config
+	client.RequestBuilder.Credential = credential
 
 	//init user
 	var resp = client.CallApi("demo.time.get", "1.0", nil)
-	resp.IsSuccess()
+	resp.Data
 }

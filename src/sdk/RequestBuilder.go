@@ -45,16 +45,6 @@ func (rb *RequestBuilder) Build(api string, version string, params interface{}) 
 	return req
 }
 
-func (rb *RequestBuilder) SetCredential(credential Credential) *RequestBuilder {
-	rb.Credential = &credential
-	return rb
-}
-
-func (rb *RequestBuilder) SetConfig(config Config) *RequestBuilder {
-	rb.Config = &config
-	return rb
-}
-
 func (rb *RequestBuilder) getDeviceId() string {
 	interfaces, err :=  net.Interfaces()
 	if err != nil {

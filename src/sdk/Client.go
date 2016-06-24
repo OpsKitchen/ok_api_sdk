@@ -20,11 +20,6 @@ func NewClient() *Client {
 	}
 }
 
-func (c *Client) SetLogger(logger *log.Logger) *Client {
-	c.Logger = &logger
-	return c
-}
-
 func (c *Client) CallApi(api string, version string, params interface{}) *ApiResult  {
 	var request http.Request = c.RequestBuilder.Build(api, version, params)
 	var response, err = c.HttpClient.Do(request)
