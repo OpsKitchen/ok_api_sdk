@@ -1,12 +1,9 @@
-package OkApi
+package sdk
 
 type ApiResult struct {
 	Success   *bool
-	ErrorCode *string
+	ErrorCode string
 	Data      interface{}
-}
-
-func DecodeToApiResult(json string) *ApiResult {
 }
 
 func (r *ApiResult) IsSuccess() bool {

@@ -1,4 +1,4 @@
-package OkApi
+package sdk
 
 import (
 	"net/http"
