@@ -14,33 +14,36 @@ type Client struct {
 }
 
 func NewClient() *Client {
-	return &Client{
+	return &Client {
 		HttpClient: http.DefaultClient,
-		RequestBuilder: &RequestBuilder{},
+		RequestBuilder: &RequestBuilder {
+			Config: NewConfig(),
+			Credential: &Credential {},
+		},
 	}
 }
 
-func (c *Client) CallApi(api string, version string, params interface{}) (*ApiResult, error)  {
+func (client *Client) CallApi(api string, version string, params interface{}) (*ApiResult, error)  {
 	var request *http.Request
 	var response *http.Response
 	var apiResult *ApiResult
 
-	request = c.RequestBuilder.Build(api, version, params)
-	response, err := c.HttpClient.Do(request)
+	request = client.RequestBuilder.Build(api, version, params)
+	response, err := client.HttpClient.Do(request)
 	if err != nil {
-		c.Logger.Fatal("Do http request failed: " + api + " " + version)
+		//client.Logger.Fatal("Do http request failed: " + api + " " + version)
 		return nil, err
 	}
 	defer response.Body.Close()
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		c.Logger.Fatal("Read response body failed: " + api + " " + version)
+		//client.Logger.Fatal("Read response body failed: " + api + " " + version)
 		return nil, err
 	}
 
 	err = json.Unmarshal(body, &apiResult)
 	if err != nil {
-		c.Logger.Fatal("Json decode failed: " + api + " " + version)
+		//client.Logger.Fatal("Json decode failed: " + api + " " + version)
 		return nil, err
 	}
 	return apiResult, nil

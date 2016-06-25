@@ -6,25 +6,15 @@ import (
 )
 
 func main() {
-	var config *sdk.Config = sdk.NewConfig()
-	var credential *sdk.Credential = sdk.NewCredential()
 	var client *sdk.Client = sdk.NewClient()
 
 	//init config
-	config.AppVersionValue = "1.0.1"
-	config.AppMarketIdValue = "678"
-	config.DisableSSL = true
-	config.GatewayHost = "api.OpsKitchen.com"
+	client.RequestBuilder.Config.SetAppVersionValue("1.0.1").SetAppMarketIdValue("678").SetGatewayHost("api.OpsKitchen.com").SetDisableSSL(true)
 
 	//init credential
-	credential.AppKey = "101"
-	credential.Secret = "your secret"
+	client.RequestBuilder.Credential.SetAppKey("101").SetSecret("7INWkF/qSkkXrFwZ")
 
-	//init client
-	client.RequestBuilder.Config = config
-	client.RequestBuilder.Credential = credential
-
-	//init user
+	//call api
 	resp, err := client.CallApi("ops.meta.os.list", "1.0", nil)
 	if err != nil {
 		fmt.Println(err.Error())

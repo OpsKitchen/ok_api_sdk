@@ -26,7 +26,7 @@ type Config struct {
 }
 
 func NewConfig() *Config {
-	return &Config{
+	return &Config {
 		HttpMethod: "POST",
 
 		//System parameter name in HTTP header
@@ -43,4 +43,79 @@ func NewConfig() *Config {
 		TimestampFieldName: "timestamp",
 		VersionFieldName:   "version",
 	}
+}
+
+func (config *Config) SetDisableSSL(disableSSL bool) *Config {
+	config.DisableSSL = disableSSL
+	return config
+}
+
+func (config *Config) SetGatewayHost(gatewayHost string) *Config {
+	config.GatewayHost = gatewayHost
+	return config
+}
+
+func (config *Config) SetHttpMethod(httpMethod string) *Config {
+	config.HttpMethod = httpMethod
+	return config
+}
+
+func (config *Config) SetAppKeyFieldName(appKeyFieldName string) *Config {
+	config.AppKeyFieldName = appKeyFieldName
+	return config
+}
+
+func (config *Config) SetAppVersionFieldName(appVersionFieldName string) *Config {
+	config.AppVersionFieldName = appVersionFieldName
+	return config
+}
+
+func (config *Config) SetAppMarketIdFieldName(appMarketIdFieldName string) *Config {
+	config.AppMarketIdFieldName = appMarketIdFieldName
+	return config
+}
+
+func (config *Config) SetDeviceIdFieldName(deviceIdFieldName string) *Config {
+	config.DeviceIdFieldName = deviceIdFieldName
+	return config
+}
+
+func (config *Config) SetSessionIdFieldName(sessionIdFieldName string) *Config {
+	config.SessionIdFieldName = sessionIdFieldName
+	return config
+}
+
+func (config *Config) SetSignFieldName(signFieldName string) *Config {
+	config.SignFieldName = signFieldName
+	return config
+}
+
+func (config *Config) SetApiFieldName(apiFieldName string) *Config {
+	config.ApiFieldName = apiFieldName
+	return config
+}
+
+func (config *Config) SetParamsFieldName(paramsFieldName string) *Config {
+	config.ParamsFieldName = paramsFieldName
+	return config
+}
+
+func (config *Config) SetTimestampFieldName(timestampFieldName string) *Config {
+	config.TimestampFieldName = timestampFieldName
+	return config
+}
+
+func (config *Config) SetVersionFieldName(versionFieldName string) *Config {
+	config.VersionFieldName = versionFieldName
+	return config
+}
+
+func (config *Config) SetAppVersionValue(appVersion string) *Config {
+	config.AppVersionValue = appVersion
+	return config
+}
+
+func (config *Config) SetAppMarketIdValue(appMarketId string) *Config {
+	config.AppMarketIdValue = appMarketId
+	return config
 }
