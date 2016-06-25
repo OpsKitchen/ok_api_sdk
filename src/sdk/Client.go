@@ -1,10 +1,10 @@
 package sdk
 
 import (
-	"net/http"
-	"log"
-	"io/ioutil"
 	"encoding/json"
+	"io/ioutil"
+	"log"
+	"net/http"
 )
 
 type Client struct {
@@ -24,26 +24,33 @@ func NewClient() *Client {
 }
 
 func (client *Client) CallApi(api string, version string, params interface{}) (*ApiResult, error)  {
+	var err error
+	var apiResult *ApiResult
 	var request *http.Request
 	var response *http.Response
-	var apiResult *ApiResult
 
-	request = client.RequestBuilder.Build(api, version, params)
-	response, err := client.HttpClient.Do(request)
+	request, err = client.RequestBuilder.Build(api, version, params)
 	if err != nil {
-		//client.Logger.Fatal("Do http request failed: " + api + " " + version)
+		//client.Logger.Fatal("Build request failed")
 		return nil, err
 	}
+
+	response, err = client.HttpClient.Do(request)
+	if err != nil {
+		//client.Logger.Fatal("Do http request failed")
+		return nil, err
+	}
+
 	defer response.Body.Close()
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		//client.Logger.Fatal("Read response body failed: " + api + " " + version)
+		//client.Logger.Fatal("Read response body failed")
 		return nil, err
 	}
 
 	err = json.Unmarshal(body, &apiResult)
 	if err != nil {
-		//client.Logger.Fatal("Json decode failed: " + api + " " + version)
+		//client.Logger.Fatal("Json decode failed")
 		return nil, err
 	}
 	return apiResult, nil

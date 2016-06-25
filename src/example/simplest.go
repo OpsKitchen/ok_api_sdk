@@ -1,8 +1,8 @@
 package main
 
 import (
-	"sdk"
 	"fmt"
+	"sdk"
 )
 
 func main() {
@@ -18,6 +18,7 @@ func main() {
 	resp, err := client.CallApi("ops.meta.os.list", "1.0", nil)
 	if err != nil {
 		fmt.Println(err.Error())
+	} else {
+		fmt.Println(resp)
 	}
-	fmt.Println(resp)
 }
