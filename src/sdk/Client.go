@@ -1,10 +1,14 @@
 package sdk
 
 import (
+	//go builtin pkg
 	"encoding/json"
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	//local pkg
+	"sdk/model"
 )
 
 type Client struct {
@@ -17,15 +21,15 @@ func NewClient() *Client {
 	return &Client {
 		HttpClient: http.DefaultClient,
 		RequestBuilder: &RequestBuilder {
-			Config: NewConfig(),
-			Credential: &Credential {},
+			Config: model.NewConfig(),
+			Credential: &model.Credential {},
 		},
 	}
 }
 
-func (client *Client) CallApi(api string, version string, params interface{}) (*ApiResult, error)  {
+func (client *Client) CallApi(api string, version string, params interface{}) (*model.ApiResult, error)  {
 	var err error
-	var apiResult *ApiResult
+	var apiResult *model.ApiResult
 	var request *http.Request
 	var response *http.Response
 

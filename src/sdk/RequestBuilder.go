@@ -1,6 +1,7 @@
 package sdk
 
 import (
+	//go builtin pkg
 	"crypto/md5"
 	"encoding/json"
 	"fmt"
@@ -10,11 +11,14 @@ import (
 	"strings"
 	"strconv"
 	"time"
+
+	//local pkg
+	"sdk/model"
 )
 
 type RequestBuilder struct {
-	Config     *Config
-	Credential *Credential
+	Config     *model.Config
+	Credential *model.Credential
 }
 
 func (requestBuilder *RequestBuilder) Build(api string, version string, params interface{}) (*http.Request, error) {

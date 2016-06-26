@@ -1,4 +1,4 @@
-package sdk
+package model
 
 type Config struct {
 	//platform address

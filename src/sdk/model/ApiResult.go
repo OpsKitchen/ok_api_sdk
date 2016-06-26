@@ -1,4 +1,4 @@
-package sdk
+package model
 
 type ApiResult struct {
 	Success      *bool
