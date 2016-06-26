@@ -8,11 +8,10 @@ import (
 
 	//local pkg
 	"sdk/di"
-	"sdk/di/defaultimpl"
 	"sdk/model"
 )
 
-var DefaultLogger di.Logger = &defaultimpl.Logger{}
+var DefaultLogger di.LoggerInterface = &di.Logger{}
 
 type Client struct {
 	HttpClient     *http.Client
@@ -29,7 +28,7 @@ func NewClient() *Client {
 	}
 }
 
-func SetDefaultLogger(logger di.Logger) {
+func SetDefaultLogger(logger di.LoggerInterface) {
 	DefaultLogger = logger
 }
 
