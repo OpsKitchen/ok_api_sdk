@@ -41,27 +41,27 @@ func (client *Client) CallApi(api string, version string, params interface{}) (*
 
 	request, err = client.RequestBuilder.Build(api, version, params)
 	if err != nil {
-		DefaultLogger.Fatal("Build request failed")
+		DefaultLogger.Fatal("Build request failed: ", err.Error())
 		return nil, err
 	}
 
 	response, err = client.HttpClient.Do(request)
 	if err != nil {
-		DefaultLogger.Fatal("Do http request failed")
+		DefaultLogger.Fatal("Do http request failed: ", err.Error())
 		return nil, err
 	}
 
 	defer response.Body.Close()
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		DefaultLogger.Fatal("Read response body failed")
+		DefaultLogger.Fatal("Read response body failed: ", err.Error())
 		return nil, err
 	}
-	DefaultLogger.Debug(string(body))
+	DefaultLogger.Debug("Response body: " + string(body))
 
 	err = json.Unmarshal(body, &apiResult)
 	if err != nil {
-		DefaultLogger.Fatal("Json decode failed")
+		DefaultLogger.Fatal("Reponse body json decode failed: ", err.Error())
 		return nil, err
 	}
 	return apiResult, nil

@@ -24,9 +24,7 @@ type RequestBuilder struct {
 func (requestBuilder *RequestBuilder) Build(api string, version string, params interface{}) (*http.Request, error) {
 	var err error
 	var request *http.Request
-	var deviceId string
-	var paramJson string
-	var timestamp string
+	var deviceId, gatewayUrl, paramJson, requestBody, timestamp string
 
 	paramJson, err = requestBuilder.getParamsJson(params)
 	if err != nil {
@@ -39,10 +37,13 @@ func (requestBuilder *RequestBuilder) Build(api string, version string, params i
 	}
 
 	timestamp = requestBuilder.getTimestamp()
+	gatewayUrl = requestBuilder.getGatewayUrl()
+	requestBody = requestBuilder.getPostBody(api, version, paramJson, timestamp)
+	DefaultLogger.Debug("Gateway url:", gatewayUrl)
+	DefaultLogger.Debug("Request body:", requestBody)
 
 	//init http request
-	request, err = http.NewRequest(requestBuilder.Config.HttpMethod, requestBuilder.getGatewayUrl(),
-		strings.NewReader(requestBuilder.getPostBody(api, version, paramJson, timestamp)))
+	request, err = http.NewRequest(requestBuilder.Config.HttpMethod, gatewayUrl, strings.NewReader(requestBody))
 	if err != nil {
 		return nil, err
 	}
@@ -55,7 +56,7 @@ func (requestBuilder *RequestBuilder) Build(api string, version string, params i
 	request.Header.Set(requestBuilder.Config.DeviceIdFieldName, deviceId)
 	request.Header.Set(requestBuilder.Config.SessionIdFieldName, requestBuilder.Credential.SessionId)
 	request.Header.Set(requestBuilder.Config.SignFieldName, requestBuilder.getSign(api, version, paramJson, timestamp))
-
+	DefaultLogger.Debug("Request header:", request.Header)
 	return request, nil
 }
 
@@ -86,13 +87,11 @@ func (requestBuilder *RequestBuilder) getParamsJson(v interface{}) (string, erro
 }
 
 func (requestBuilder *RequestBuilder) getPostBody(api string, version string, paramJson string, timestamp string) string {
-	var body string = fmt.Sprintf("%s&%s&%s&%s",
+	return fmt.Sprintf("%s&%s&%s&%s",
 		requestBuilder.Config.ApiFieldName + "=" + api,
 		requestBuilder.Config.VersionFieldName + "=" + version,
 		requestBuilder.Config.TimestampFieldName + "=" + requestBuilder.getTimestamp(),
 		requestBuilder.Config.ParamsFieldName + "=" + paramJson)
-	DefaultLogger.Debug(body)
-	return body
 }
 
 func (requestBuilder *RequestBuilder) getSign(api string, version string, paramJson string, timestamp string) string {
