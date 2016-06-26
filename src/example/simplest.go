@@ -4,10 +4,13 @@ import (
 	"fmt"
 	"sdk"
 	"sdk/di/logger"
+	"sdk/model"
 )
 
 func main() {
 	var client *sdk.Client = sdk.NewClient()
+	var resp *model.ApiResult
+	var err error
 
 	//init config
 	client.RequestBuilder.Config.SetAppVersionValue("1.0.1").SetAppMarketIdValue("678").SetGatewayHost("api.OpsKitchen.com").SetDisableSSL(true)
@@ -18,8 +21,18 @@ func main() {
 	//enable debug log
 	sdk.DefaultLogger.SetLevel(logger.DebugLevel)
 
-	//call api
-	resp, err := client.CallApi("ops.meta.os.list", "1.0", nil)
+	//call api without parameter
+	resp, err = client.CallApi("ops.meta.os.list", "1.0", nil)
+	if err != nil {
+		fmt.Println(err.Error())
+	} else {
+		fmt.Println(resp)
+	}
+
+	//call api with parameter
+	param := make(map[string]string)
+	param["osReleaseId"] = "3022"
+	resp, err = client.CallApi("ops.meta.osImage.listByOsReleaseId", "1.0", param)
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {
