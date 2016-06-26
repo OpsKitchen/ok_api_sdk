@@ -26,7 +26,7 @@ type Config struct {
 }
 
 func NewConfig() *Config {
-	return &Config {
+	return &Config{
 		HttpMethod: "POST",
 
 		//System parameter name in HTTP header

@@ -11,7 +11,7 @@ import (
 	"sdk/model"
 )
 
-var DefaultLogger logger.LoggerInterface = &logger.Logger {
+var DefaultLogger logger.LoggerInterface = &logger.Logger{
 	Level: logger.InfoLevel,
 }
 
@@ -21,11 +21,11 @@ type Client struct {
 }
 
 func NewClient() *Client {
-	return &Client {
+	return &Client{
 		HttpClient: http.DefaultClient,
-		RequestBuilder: &RequestBuilder {
-			Config: model.NewConfig(),
-			Credential: &model.Credential {},
+		RequestBuilder: &RequestBuilder{
+			Config:     model.NewConfig(),
+			Credential: &model.Credential{},
 		},
 	}
 }
@@ -34,7 +34,7 @@ func SetDefaultLogger(logger logger.LoggerInterface) {
 	DefaultLogger = logger
 }
 
-func (client *Client) CallApi(api string, version string, params interface{}) (*model.ApiResult, error)  {
+func (client *Client) CallApi(api string, version string, params interface{}) (*model.ApiResult, error) {
 	var err error
 	var apiResult *model.ApiResult
 	var request *http.Request

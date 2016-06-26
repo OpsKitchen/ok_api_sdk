@@ -8,8 +8,8 @@ import (
 	"io"
 	"net"
 	"net/http"
-	"strings"
 	"strconv"
+	"strings"
 	"time"
 
 	//local pkg
@@ -61,21 +61,21 @@ func (requestBuilder *RequestBuilder) Build(api string, version string, params i
 }
 
 func (requestBuilder *RequestBuilder) getDeviceId() (string, error) {
-	interfaces, err :=  net.Interfaces()
+	interfaces, err := net.Interfaces()
 	if err != nil {
 		return "", err
 	}
-	return  interfaces[1].HardwareAddr.String(), nil
+	return interfaces[1].HardwareAddr.String(), nil
 }
 
 func (requestBuilder *RequestBuilder) getGatewayUrl() string {
-	var prefix string;
+	var prefix string
 	if requestBuilder.Config.DisableSSL {
 		prefix = "http://"
 	} else {
 		prefix = "https://"
 	}
-	return prefix + requestBuilder.Config.GatewayHost + "/gw/json";
+	return prefix + requestBuilder.Config.GatewayHost + "/gw/json"
 }
 
 func (requestBuilder *RequestBuilder) getParamsJson(v interface{}) (string, error) {
@@ -88,10 +88,10 @@ func (requestBuilder *RequestBuilder) getParamsJson(v interface{}) (string, erro
 
 func (requestBuilder *RequestBuilder) getPostBody(api string, version string, paramJson string, timestamp string) string {
 	return fmt.Sprintf("%s&%s&%s&%s",
-		requestBuilder.Config.ApiFieldName + "=" + api,
-		requestBuilder.Config.VersionFieldName + "=" + version,
-		requestBuilder.Config.TimestampFieldName + "=" + requestBuilder.getTimestamp(),
-		requestBuilder.Config.ParamsFieldName + "=" + paramJson)
+		requestBuilder.Config.ApiFieldName+"="+api,
+		requestBuilder.Config.VersionFieldName+"="+version,
+		requestBuilder.Config.TimestampFieldName+"="+requestBuilder.getTimestamp(),
+		requestBuilder.Config.ParamsFieldName+"="+paramJson)
 }
 
 func (requestBuilder *RequestBuilder) getSign(api string, version string, paramJson string, timestamp string) string {
