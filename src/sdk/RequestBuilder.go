@@ -86,11 +86,13 @@ func (requestBuilder *RequestBuilder) getParamsJson(v interface{}) (string, erro
 }
 
 func (requestBuilder *RequestBuilder) getPostBody(api string, version string, paramJson string, timestamp string) string {
-	return fmt.Sprintf("%s&%s&%s&%s",
+	var body string = fmt.Sprintf("%s&%s&%s&%s",
 		requestBuilder.Config.ApiFieldName + "=" + api,
 		requestBuilder.Config.VersionFieldName + "=" + version,
 		requestBuilder.Config.TimestampFieldName + "=" + requestBuilder.getTimestamp(),
 		requestBuilder.Config.ParamsFieldName + "=" + paramJson)
+	DefaultLogger.Debug(body)
+	return body
 }
 
 func (requestBuilder *RequestBuilder) getSign(api string, version string, paramJson string, timestamp string) string {

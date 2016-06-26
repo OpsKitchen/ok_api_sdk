@@ -1,10 +1,10 @@
 package di
 
 type Logger interface {
-	Debug()
-	Info()
-	Warn()
-	Error()
-	Fatal()
-	Panic()
+	Debug(string)
+	Info(string)
+	Warn(string)
+	Error(string)
+	Fatal(string)
+	Panic(string)
 }
