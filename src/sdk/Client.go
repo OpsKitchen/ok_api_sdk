@@ -7,11 +7,13 @@ import (
 	"net/http"
 
 	//local pkg
-	"sdk/di"
+	"sdk/di/logger"
 	"sdk/model"
 )
 
-var DefaultLogger di.LoggerInterface = &di.Logger{}
+var DefaultLogger logger.LoggerInterface = &logger.Logger {
+	Level: logger.InfoLevel,
+}
 
 type Client struct {
 	HttpClient     *http.Client
@@ -28,7 +30,7 @@ func NewClient() *Client {
 	}
 }
 
-func SetDefaultLogger(logger di.LoggerInterface) {
+func SetDefaultLogger(logger logger.LoggerInterface) {
 	DefaultLogger = logger
 }
 
@@ -40,27 +42,27 @@ func (client *Client) CallApi(api string, version string, params interface{}) (*
 
 	request, err = client.RequestBuilder.Build(api, version, params)
 	if err != nil {
-		DefaultLogger.Fatal("Build request failed: ", err.Error())
+		DefaultLogger.Error("Build request failed: ", err.Error())
 		return nil, err
 	}
 
 	response, err = client.HttpClient.Do(request)
 	if err != nil {
-		DefaultLogger.Fatal("Do http request failed: ", err.Error())
+		DefaultLogger.Error("Do http request failed: ", err.Error())
 		return nil, err
 	}
 
 	defer response.Body.Close()
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		DefaultLogger.Fatal("Read response body failed: ", err.Error())
+		DefaultLogger.Error("Read response body failed: ", err.Error())
 		return nil, err
 	}
 	DefaultLogger.Debug("Response body: " + string(body))
 
 	err = json.Unmarshal(body, &apiResult)
 	if err != nil {
-		DefaultLogger.Fatal("Reponse body json decode failed: ", err.Error())
+		DefaultLogger.Error("Reponse body json decode failed: ", err.Error())
 		return nil, err
 	}
 	return apiResult, nil

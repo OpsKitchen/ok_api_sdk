@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"sdk"
+	"sdk/di/logger"
 )
 
 func main() {
@@ -17,6 +18,9 @@ func main() {
 	//query param
 	param := make(map[string]string)
 	param["osReleaseId"] = "3022"
+
+	//enable debug log
+	sdk.DefaultLogger.SetLevel(logger.DebugLevel)
 
 	//call api
 	resp, err := client.CallApi("ops.meta.osImage.listByOsReleaseId", "1.0", param)

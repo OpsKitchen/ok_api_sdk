@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"sdk"
+	"sdk/di/logger"
 )
 
 func main() {
@@ -13,6 +14,9 @@ func main() {
 
 	//init credential
 	client.RequestBuilder.Credential.SetAppKey("101").SetSecret("7INWkF/qSkkXrFwZ")
+
+	//enable debug log
+	sdk.DefaultLogger.SetLevel(logger.DebugLevel)
 
 	//call api
 	resp, err := client.CallApi("ops.meta.os.list", "1.0", nil)
