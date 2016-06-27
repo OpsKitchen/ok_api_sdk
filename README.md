@@ -12,20 +12,28 @@ Run:
     export PATH=$PATH:/usr/local/go/bin
     export GOROOT="/usr/local/go/"
 
+### Prepare working dir
 
-### Download or clone this project:
+    mkdir /opt/go
+    cd /opt/go
+    export GOPATH=`pwd`
 
-    mkdir ok_api_sdk_go
-    cd ok_api_sdk_go
-    git clone https://github.com/OpsKitchen/ok_api_sdk_go.git src
+
+### Download this project:
+
+    cd $GOPATH
+    go get github.com/OpsKitchen/ok_api_sdk_go
 
 ### Customize your demo data
-Edit src/example/simplest.go, replace the demo data
+
+    cd src/github.com/OpsKitchen/ok_api_sdk_go/
+
+Edit example.go, replace the demo data
 
 ### Run
-    cd src
-    ./build.sh
-    ./example
+
+    export GOPATH=`pwd`
+    go run example.go
 
 Demo output is like this:
 
