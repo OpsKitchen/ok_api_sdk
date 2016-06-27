@@ -7,8 +7,8 @@ import (
 	"net/http"
 
 	//local pkg
-	"sdk/di/logger"
-	"sdk/model"
+	"github.com/OpsKitchen/ok_api_sdk_go/sdk/di/logger"
+	"github.com/OpsKitchen/ok_api_sdk_go/sdk/model"
 )
 
 var DefaultLogger logger.LoggerInterface = &logger.Logger{

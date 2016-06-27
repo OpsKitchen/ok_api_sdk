@@ -13,7 +13,7 @@ import (
 	"time"
 
 	//local pkg
-	"sdk/model"
+	"github.com/OpsKitchen/ok_api_sdk_go/sdk/model"
 )
 
 type RequestBuilder struct {
