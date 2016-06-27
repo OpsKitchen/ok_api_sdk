@@ -1,7 +1,6 @@
 package logger
 
 type LoggerInterface interface {
-	SetLevel(Level)
 	Debug(args ...interface{})
 	Info(args ...interface{})
 	Warn(args ...interface{})

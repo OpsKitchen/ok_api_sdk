@@ -19,7 +19,9 @@ func main() {
 	client.RequestBuilder.Credential.SetAppKey("101").SetSecret("7INWkF/qSkkXrFwZ")
 
 	//enable debug log
-	sdk.DefaultLogger.SetLevel(logger.DebugLevel)
+	sdk.SetDefaultLogger(&logger.Logger{
+		Level: logger.DebugLevel,
+	})
 
 	//call api without parameter
 	resp, err = client.CallApi("ops.meta.os.list", "1.0", nil)
