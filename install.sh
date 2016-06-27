@@ -11,7 +11,7 @@ export GOPATH="$CURDIR"
 
 gofmt -w src
 
-go install sdk example
+go install example
 
 export GOPATH="$OLDGOPATH"
 
