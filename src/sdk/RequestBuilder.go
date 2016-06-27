@@ -78,8 +78,8 @@ func (requestBuilder *RequestBuilder) getGatewayUrl() string {
 	return prefix + requestBuilder.Config.GatewayHost + "/gw/json"
 }
 
-func (requestBuilder *RequestBuilder) getParamsJson(v interface{}) (string, error) {
-	jsonBytes, err := json.Marshal(v)
+func (requestBuilder *RequestBuilder) getParamsJson(params interface{}) (string, error) {
+	jsonBytes, err := json.Marshal(params)
 	if err != nil {
 		return "", err
 	}
