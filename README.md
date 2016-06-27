@@ -32,12 +32,11 @@ Edit example.go, replace the demo data
 
 ### Run
 
-    export GOPATH=`pwd`
     go run example.go
 
 Demo output is like this:
 
-    [root@dev67 example]# go run simplest.go
+    [root@dev67 example]# go run example.go
     [DEBUG]: Gateway url: http://api.OpsKitchen.com/gw/json
     [DEBUG]: Request body: api=ops.meta.os.list&version=1.0&timestamp=1466961052&params=null
     [DEBUG]: Request header: map[Oa-App-Market-Id:[678] Oa-App-Version:[1.0.1] Oa-Device-Id:[08:00:27:bf:d4:5e] Oa-Session-Id:[] Oa-Sign:[81129ce782af9d0ce1f8b5419d00ab0b] Content-Type:[application/x-www-form-urlencoded] Oa-App-Key:[101]]
