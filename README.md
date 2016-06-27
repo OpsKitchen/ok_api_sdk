@@ -2,10 +2,30 @@
 Golang SDK for OK OpenAPI platform
 
 ## Get started
-1. Make sure your Golang SDK is ready
-2. Download or clone this project
-3. Edit src/example/simplest.go, replace the demo data
-4. run ```go run src/example/simplest.go```, or ```./install.sh; bin/exmaple```
+### Prepare Go SDK
+Download go SDK from: https://golang.org/dl/
+
+Decompress it into /usr/local/go
+
+Run:
+
+    export PATH=$PATH:/usr/local/go/bin
+    export GOROOT="/usr/local/go/"
+
+
+### Download or clone this project:
+
+    mkdir ok_api_sdk_go
+    cd ok_api_sdk_go
+    git clone https://github.com/OpsKitchen/ok_api_sdk_go.git src
+
+### Customize your demo data
+Edit src/example/simplest.go, replace the demo data
+
+### Run
+    cd src
+    ./build.sh
+    ./example
 
 Demo output is like this:
 
@@ -20,24 +40,3 @@ Demo output is like this:
     [DEBUG]: Request header: map[Oa-Sign:[3b89f21740a52dc4b750af96aee05c7d] Content-Type:[application/x-www-form-urlencoded] Oa-App-Key:[101] Oa-App-Market-Id:[678] Oa-App-Version:[1.0.1] Oa-Device-Id:[08:00:27:bf:d4:5e] Oa-Session-Id:[]]
     [DEBUG]: Response body: {"success":true,"data":[{"id":"302207","osReleaseId":"3022","fullVersion":"6.7","repoSnapshotId":"307"},{"id":"302206","osReleaseId":"3022","fullVersion":"6.6","repoSnapshotId":"306"},{"id":"302205","osReleaseId":"3022","fullVersion":"6.5","repoSnapshotId":"305"},{"id":"302204","osReleaseId":"3022","fullVersion":"6.4","repoSnapshotId":"304"},{"id":"302203","osReleaseId":"3022","fullVersion":"6.3","repoSnapshotId":"303"},{"id":"302202","osReleaseId":"3022","fullVersion":"6.2","repoSnapshotId":"302"},{"id":"302201","osReleaseId":"3022","fullVersion":"6.1","repoSnapshotId":"301"},{"id":"302200","osReleaseId":"3022","fullVersion":"6.0","repoSnapshotId":"300"}]}
     &{0xc8200f01b0   [map[id:302207 osReleaseId:3022 fullVersion:6.7 repoSnapshotId:307] map[id:302206 osReleaseId:3022 fullVersion:6.6 repoSnapshotId:306] map[osReleaseId:3022 fullVersion:6.5 repoSnapshotId:305 id:302205] map[fullVersion:6.4 repoSnapshotId:304 id:302204 osReleaseId:3022] map[id:302203 osReleaseId:3022 fullVersion:6.3 repoSnapshotId:303] map[id:302202 osReleaseId:3022 fullVersion:6.2 repoSnapshotId:302] map[id:302201 osReleaseId:3022 fullVersion:6.1 repoSnapshotId:301] map[id:302200 osReleaseId:3022 fullVersion:6.0 repoSnapshotId:300]]}
-
-## Build Script
-
-    #!/usr/bin/env bash
-
-    if [ ! -f install.sh ]; then
-    echo 'install must be run within its container folder' 1>&2
-    exit 1
-    fi
-
-    CURDIR=`pwd`
-    OLDGOPATH="$GOPATH"
-    export GOPATH="$CURDIR"
-
-    gofmt -w src
-
-    go install example
-
-    export GOPATH="$OLDGOPATH"
-
-    echo 'finished'
