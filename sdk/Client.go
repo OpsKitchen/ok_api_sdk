@@ -65,5 +65,7 @@ func (client *Client) CallApi(api string, version string, params interface{}) (*
 		DefaultLogger.Error("Reponse body json decode failed: ", err.Error())
 		return nil, err
 	}
+
+	apiResult.DataBytes, _ = json.Marshal(apiResult.Data)
 	return apiResult, nil
 }

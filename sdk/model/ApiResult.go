@@ -1,8 +1,9 @@
 package model
 
 type ApiResult struct {
-	Success      *bool
+	Success      bool
 	ErrorCode    string
 	ErrorMessage string
 	Data         interface{}
+	DataBytes    []byte
 }
