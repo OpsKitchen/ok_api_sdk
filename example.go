@@ -27,7 +27,7 @@ func main() {
 	})
 
 	//call api without parameter
-	resp, err = client.CallApi("ops.meta.os.list", "1.0", nil)
+	resp, err = client.CallApi("ops.meta.os.list", "1.0", nil, nil)
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {
@@ -37,7 +37,7 @@ func main() {
 	//call api with parameter
 	param := make(map[string]string)
 	param["osReleaseId"] = "3022"
-	resp, err = client.CallApi("ops.meta.osImage.listByOsReleaseId", "1.0", param)
+	resp, err = client.CallApi("ops.meta.osImage.listByOsReleaseId", "1.0", param, nil)
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {

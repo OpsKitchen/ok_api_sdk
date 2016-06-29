@@ -34,9 +34,10 @@ func SetDefaultLogger(logger logger.LoggerInterface) {
 	DefaultLogger = logger
 }
 
-func (client *Client) CallApi(api string, version string, params interface{}) (*model.ApiResult, error) {
-	var err error
+func (client *Client) CallApi(api string, version string, params interface{}, returnDataPointer interface{}) (*model.ApiResult, error) {
 	var apiResult *model.ApiResult
+	var dataByte []byte
+	var err error
 	var request *http.Request
 	var response *http.Response
 
@@ -66,6 +67,11 @@ func (client *Client) CallApi(api string, version string, params interface{}) (*
 		return nil, err
 	}
 
-	apiResult.DataBytes, _ = json.Marshal(apiResult.Data)
+	if returnDataPointer != nil {
+		dataByte, _ = json.Marshal(apiResult.Data)
+		DefaultLogger.Debug(dataByte)
+		json.Unmarshal(dataByte, returnDataPointer)
+	}
+
 	return apiResult, nil
 }
