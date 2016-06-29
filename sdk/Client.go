@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"reflect"
 
 	//local pkg
 	"github.com/OpsKitchen/ok_api_sdk_go/sdk/di/logger"
@@ -68,9 +69,13 @@ func (client *Client) CallApi(api string, version string, params interface{}, re
 	}
 
 	if returnDataPointer != nil {
+		var returnDataType reflect.Type = reflect.TypeOf(returnDataPointer)
+		DefaultLogger.Debug("Return data type: ", returnDataType)
 		dataByte, _ = json.Marshal(apiResult.Data)
-		DefaultLogger.Debug(dataByte)
-		json.Unmarshal(dataByte, returnDataPointer)
+		err = json.Unmarshal(dataByte, returnDataPointer)
+		if err != nil {
+			DefaultLogger.Error("Can not cast return data to type: ", returnDataType)
+		}
 	}
 
 	return apiResult, nil
