@@ -5,5 +5,4 @@ type ApiResult struct {
 	ErrorCode    string
 	ErrorMessage string
 	Data         interface{}
-	DataBytes    []byte
 }
