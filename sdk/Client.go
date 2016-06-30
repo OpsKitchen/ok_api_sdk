@@ -37,7 +37,7 @@ func SetDefaultLogger(logger logger.LoggerInterface) {
 
 func (client *Client) CallApi(api string, version string, params interface{}, returnDataPointer interface{}) (*model.ApiResult, error) {
 	var apiResult *model.ApiResult
-	var dataByte []byte
+	var byteArray []byte
 	var err error
 	var request *http.Request
 	var response *http.Response
@@ -55,14 +55,14 @@ func (client *Client) CallApi(api string, version string, params interface{}, re
 	}
 
 	defer response.Body.Close()
-	body, err := ioutil.ReadAll(response.Body)
+	byteArray, err = ioutil.ReadAll(response.Body)
 	if err != nil {
 		DefaultLogger.Error("Read response body failed: ", err.Error())
 		return nil, err
 	}
-	DefaultLogger.Debug("Response body: " + string(body))
+	DefaultLogger.Debug("Response body: " + string(byteArray))
 
-	err = json.Unmarshal(body, &apiResult)
+	err = json.Unmarshal(byteArray, &apiResult)
 	if err != nil {
 		DefaultLogger.Error("Reponse body json decode failed: ", err.Error())
 		return nil, err
@@ -71,8 +71,8 @@ func (client *Client) CallApi(api string, version string, params interface{}, re
 	if returnDataPointer != nil {
 		var returnDataType reflect.Type = reflect.TypeOf(returnDataPointer)
 		DefaultLogger.Debug("Return data type: ", returnDataType)
-		dataByte, _ = json.Marshal(apiResult.Data)
-		err = json.Unmarshal(dataByte, returnDataPointer)
+		byteArray, _ = json.Marshal(apiResult.Data)
+		err = json.Unmarshal(byteArray, returnDataPointer)
 		if err != nil {
 			DefaultLogger.Error("Can not cast return data to type: ", returnDataType)
 		}

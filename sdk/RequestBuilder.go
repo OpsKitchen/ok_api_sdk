@@ -5,6 +5,7 @@ import (
 	"crypto/md5"
 	"encoding/json"
 	"fmt"
+	"hash"
 	"io"
 	"net"
 	"net/http"
@@ -61,7 +62,9 @@ func (requestBuilder *RequestBuilder) Build(api string, version string, params i
 }
 
 func (requestBuilder *RequestBuilder) getDeviceId() (string, error) {
-	interfaces, err := net.Interfaces()
+	var err error
+	var interfaces []net.Interface
+	interfaces, err = net.Interfaces()
 	if err != nil {
 		return "", err
 	}
@@ -79,7 +82,9 @@ func (requestBuilder *RequestBuilder) getGatewayUrl() string {
 }
 
 func (requestBuilder *RequestBuilder) getParamsJson(params interface{}) (string, error) {
-	jsonBytes, err := json.Marshal(params)
+	var err error
+	var jsonBytes []byte
+	jsonBytes, err = json.Marshal(params)
 	if err != nil {
 		return "", err
 	}
@@ -96,7 +101,7 @@ func (requestBuilder *RequestBuilder) getPostBody(api string, version string, pa
 
 func (requestBuilder *RequestBuilder) getSign(api string, version string, paramJson string, timestamp string) string {
 	var stringToBeSign string = requestBuilder.Credential.Secret + api + version + paramJson + timestamp
-	hash := md5.New()
+	var hash hash.Hash = md5.New()
 	io.WriteString(hash, stringToBeSign)
 	return fmt.Sprintf("%x", hash.Sum(nil))
 }

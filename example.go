@@ -35,7 +35,7 @@ func main() {
 	}
 
 	//call api with parameter
-	param := make(map[string]string)
+	var param map[string]string = make(map[string]string)
 	param["osReleaseId"] = "3022"
 	resp, err = client.CallApi("ops.meta.osImage.listByOsReleaseId", "1.0", param, nil)
 	if err != nil {
