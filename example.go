@@ -1,10 +1,7 @@
 package main
 
 import (
-	//go builtin pkg
 	"fmt"
-
-	//local pkg
 	"github.com/OpsKitchen/ok_api_sdk_go/sdk"
 	"github.com/OpsKitchen/ok_api_sdk_go/sdk/di/logger"
 	"github.com/OpsKitchen/ok_api_sdk_go/sdk/model"

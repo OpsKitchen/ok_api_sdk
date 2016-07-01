@@ -1,10 +1,10 @@
 package sdk
 
 import (
-	//go builtin pkg
 	"crypto/md5"
 	"encoding/json"
 	"fmt"
+	"github.com/OpsKitchen/ok_api_sdk_go/sdk/model"
 	"hash"
 	"io"
 	"net"
@@ -12,9 +12,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-
-	//local pkg
-	"github.com/OpsKitchen/ok_api_sdk_go/sdk/model"
 )
 
 type RequestBuilder struct {

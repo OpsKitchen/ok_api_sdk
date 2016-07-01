@@ -1,15 +1,12 @@
 package sdk
 
 import (
-	//go builtin pkg
 	"encoding/json"
+	"github.com/OpsKitchen/ok_api_sdk_go/sdk/di/logger"
+	"github.com/OpsKitchen/ok_api_sdk_go/sdk/model"
 	"io/ioutil"
 	"net/http"
 	"reflect"
-
-	//local pkg
-	"github.com/OpsKitchen/ok_api_sdk_go/sdk/di/logger"
-	"github.com/OpsKitchen/ok_api_sdk_go/sdk/model"
 )
 
 var DefaultLogger logger.LoggerInterface = &logger.Logger{
