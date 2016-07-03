@@ -34,42 +34,44 @@ func SetDefaultLogger(logger logger.LoggerInterface) {
 
 func (client *Client) CallApi(api string, version string, params interface{}, returnDataPointer interface{}) (*model.ApiResult, error) {
 	var apiResult *model.ApiResult
-	var byteArray []byte
 	var err error
 	var request *http.Request
 	var response *http.Response
+	var responseBodyBytes []byte
+	var responseBodyString string
 
 	request, err = client.RequestBuilder.Build(api, version, params)
 	if err != nil {
-		DefaultLogger.Error("Build request failed: ", err.Error())
 		return nil, err
 	}
 
 	response, err = client.HttpClient.Do(request)
 	if err != nil {
-		DefaultLogger.Error("Do http request failed: ", err.Error())
+		DefaultLogger.Error("Failed to do http communication: " + err.Error())
 		return nil, err
 	}
 
 	defer response.Body.Close()
-	byteArray, err = ioutil.ReadAll(response.Body)
+	responseBodyBytes, err = ioutil.ReadAll(response.Body)
 	if err != nil {
-		DefaultLogger.Error("Read response body failed: ", err.Error())
+		DefaultLogger.Error("Failed to read response body: " + err.Error())
 		return nil, err
 	}
-	DefaultLogger.Debug("Response body: " + string(byteArray))
+	responseBodyString = string(responseBodyBytes)
+	DefaultLogger.Debug("Response body: " + responseBodyString)
 
-	err = json.Unmarshal(byteArray, &apiResult)
+	err = json.Unmarshal(responseBodyBytes, &apiResult)
 	if err != nil {
-		DefaultLogger.Error("Reponse body json decode failed: ", err.Error())
+		DefaultLogger.Error("Reponse body is not valid json.")
+		DefaultLogger.Error("Json decoder said: " + err.Error())
+		DefaultLogger.Error("Response body is: " + responseBodyString)
 		return nil, err
 	}
 
 	if returnDataPointer != nil {
 		var returnDataType reflect.Type = reflect.TypeOf(returnDataPointer)
-		DefaultLogger.Debug("Return data type: ", returnDataType)
-		byteArray, _ = json.Marshal(apiResult.Data)
-		err = json.Unmarshal(byteArray, returnDataPointer)
+		responseBodyBytes, _ = json.Marshal(apiResult.Data)
+		err = json.Unmarshal(responseBodyBytes, returnDataPointer)
 		if err != nil {
 			DefaultLogger.Error("Can not cast return data to type: ", returnDataType)
 		}

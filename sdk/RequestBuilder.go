@@ -12,6 +12,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"errors"
 )
 
 type RequestBuilder struct {
@@ -37,12 +38,13 @@ func (requestBuilder *RequestBuilder) Build(api string, version string, params i
 	timestamp = requestBuilder.getTimestamp()
 	gatewayUrl = requestBuilder.getGatewayUrl()
 	requestBody = requestBuilder.getPostBody(api, version, paramJson, timestamp)
-	DefaultLogger.Debug("Gateway url:", gatewayUrl)
-	DefaultLogger.Debug("Request body:", requestBody)
+	DefaultLogger.Debug("Gateway url:" + gatewayUrl)
+	DefaultLogger.Debug("Request body:" + requestBody)
 
 	//init http request
 	request, err = http.NewRequest(requestBuilder.Config.HttpMethod, gatewayUrl, strings.NewReader(requestBody))
 	if err != nil {
+		DefaultLogger.Error("Failed to create http request object: " + err.Error())
 		return nil, err
 	}
 
@@ -60,10 +62,17 @@ func (requestBuilder *RequestBuilder) Build(api string, version string, params i
 
 func (requestBuilder *RequestBuilder) getDeviceId() (string, error) {
 	var err error
+	var errMsg string
 	var interfaces []net.Interface
 	interfaces, err = net.Interfaces()
 	if err != nil {
+		DefaultLogger.Error("Failed to get net interface list: " + err.Error())
 		return "", err
+	}
+	if len(interfaces) < 2 {
+		errMsg = "Amount of net interfaces is less than 2"
+		DefaultLogger.Error(errMsg)
+		return "", errors.New(errMsg)
 	}
 	return interfaces[1].HardwareAddr.String(), nil
 }
@@ -83,6 +92,7 @@ func (requestBuilder *RequestBuilder) getParamsJson(params interface{}) (string,
 	var jsonBytes []byte
 	jsonBytes, err = json.Marshal(params)
 	if err != nil {
+		DefaultLogger.Error("Api parameter can not encode as json. Json encoder said: " + err.Error())
 		return "", err
 	}
 	return string(jsonBytes), nil
