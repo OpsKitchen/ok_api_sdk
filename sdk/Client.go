@@ -63,8 +63,6 @@ func (client *Client) CallApi(api string, version string, params interface{}, re
 	err = json.Unmarshal(responseBodyBytes, &apiResult)
 	if err != nil {
 		DefaultLogger.Error("Reponse body is not valid json.")
-		DefaultLogger.Error("Json decoder said: " + err.Error())
-		DefaultLogger.Error("Response body is: " + responseBodyString)
 		return nil, err
 	}
 
@@ -73,7 +71,7 @@ func (client *Client) CallApi(api string, version string, params interface{}, re
 		responseBodyBytes, _ = json.Marshal(apiResult.Data)
 		err = json.Unmarshal(responseBodyBytes, returnDataPointer)
 		if err != nil {
-			DefaultLogger.Error("Can not cast return data to type: ", returnDataType)
+			DefaultLogger.Error("Can not cast return data to type: ", returnDataType)//can not use "str + str" here
 		}
 	}
 
