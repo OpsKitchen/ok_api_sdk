@@ -2,6 +2,9 @@
 Golang SDK for OK OpenAPI platform
 
 ## Get started
+### Install requirements
+    yum install -y git
+
 ### Prepare Go SDK
 Download go SDK from: https://golang.org/dl/
 
