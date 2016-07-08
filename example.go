@@ -8,7 +8,8 @@ import (
 )
 
 func main() {
-	var client *sdk.Client = sdk.NewClient()
+	var client *sdk.Client
+	client = sdk.NewClient()
 	var resp *model.ApiResult
 	var err error
 
@@ -32,7 +33,8 @@ func main() {
 	}
 
 	//call api with parameter
-	var param map[string]string = make(map[string]string)
+	var param map[string]string
+	param = make(map[string]string)
 	param["osReleaseId"] = "3022"
 	resp, err = client.CallApi("ops.meta.osImage.listByOsReleaseId", "1.0", param, nil)
 	if err != nil {

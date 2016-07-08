@@ -3,16 +3,17 @@ package sdk
 import (
 	"crypto/md5"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/OpsKitchen/ok_api_sdk_go/sdk/model"
 	"hash"
 	"io"
 	"net"
 	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
 	"time"
-	"errors"
 )
 
 type RequestBuilder struct {
@@ -78,13 +79,14 @@ func (requestBuilder *RequestBuilder) getDeviceId() (string, error) {
 }
 
 func (requestBuilder *RequestBuilder) getGatewayUrl() string {
-	var prefix string
+	var urlObj url.URL
+	urlObj = url.URL{Host: requestBuilder.Config.GatewayHost, Path: "/gw/json"}
 	if requestBuilder.Config.DisableSSL {
-		prefix = "http://"
+		urlObj.Scheme = "http"
 	} else {
-		prefix = "https://"
+		urlObj.Scheme = "https"
 	}
-	return prefix + requestBuilder.Config.GatewayHost + "/gw/json"
+	return urlObj.String()
 }
 
 func (requestBuilder *RequestBuilder) getParamsJson(params interface{}) (string, error) {
@@ -107,10 +109,12 @@ func (requestBuilder *RequestBuilder) getPostBody(api string, version string, pa
 }
 
 func (requestBuilder *RequestBuilder) getSign(api string, version string, paramJson string, timestamp string) string {
-	var stringToBeSign string = requestBuilder.Credential.Secret + api + version + paramJson + timestamp
-	var hash hash.Hash = md5.New()
-	io.WriteString(hash, stringToBeSign)
-	return fmt.Sprintf("%x", hash.Sum(nil))
+	var hashObj hash.Hash
+	var stringToBeSign string
+	hashObj = md5.New()
+	stringToBeSign = requestBuilder.Credential.Secret + api + version + paramJson + timestamp
+	io.WriteString(hashObj, stringToBeSign)
+	return fmt.Sprintf("%x", hashObj.Sum(nil))
 }
 
 func (requestBuilder *RequestBuilder) getTimestamp() string {

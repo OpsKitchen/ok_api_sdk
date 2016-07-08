@@ -6,7 +6,6 @@ import (
 	"github.com/OpsKitchen/ok_api_sdk_go/sdk/model"
 	"io/ioutil"
 	"net/http"
-	"reflect"
 )
 
 var DefaultLogger logger.LoggerInterface = &logger.Logger{
@@ -67,11 +66,10 @@ func (client *Client) CallApi(api string, version string, params interface{}, re
 	}
 
 	if returnDataPointer != nil {
-		var returnDataType reflect.Type = reflect.TypeOf(returnDataPointer)
 		responseBodyBytes, _ = json.Marshal(apiResult.Data)
 		err = json.Unmarshal(responseBodyBytes, returnDataPointer)
 		if err != nil {
-			DefaultLogger.Error("Can not cast return data to type: ", returnDataType)//can not use "str + str" here
+			DefaultLogger.Error("Failed to cast return data type") //can not use "str + str" here
 		}
 	}
 
