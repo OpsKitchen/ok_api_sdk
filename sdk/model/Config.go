@@ -29,7 +29,7 @@ type Config struct {
 func NewConfig() *Config {
 	return &Config{
 		GatewayPath: "/gw/json",
-		HttpMethod: "POST",
+		HttpMethod:  "POST",
 
 		//System parameter name in HTTP header
 		AppKeyFieldName:      "OA-App-Key",
