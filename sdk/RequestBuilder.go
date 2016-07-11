@@ -80,7 +80,10 @@ func (requestBuilder *RequestBuilder) getDeviceId() (string, error) {
 
 func (requestBuilder *RequestBuilder) getGatewayUrl() string {
 	var urlObj url.URL
-	urlObj = url.URL{Host: requestBuilder.Config.GatewayHost, Path: "/gw/json"}
+	urlObj = url.URL{
+		Host: requestBuilder.Config.GatewayHost,
+		Path: requestBuilder.Config.GatewayPath,
+	}
 	if requestBuilder.Config.DisableSSL {
 		urlObj.Scheme = "http"
 	} else {

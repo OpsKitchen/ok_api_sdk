@@ -69,7 +69,7 @@ func (client *Client) CallApi(api string, version string, params interface{}, re
 		responseBodyBytes, _ = json.Marshal(apiResult.Data)
 		err = json.Unmarshal(responseBodyBytes, returnDataPointer)
 		if err != nil {
-			DefaultLogger.Error("Failed to cast return data type") //can not use "str + str" here
+			DefaultLogger.Error("Failed to cast return data type")
 		}
 	}
 

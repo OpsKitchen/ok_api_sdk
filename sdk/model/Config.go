@@ -4,6 +4,7 @@ type Config struct {
 	//platform address
 	DisableSSL  bool
 	GatewayHost string
+	GatewayPath string
 	HttpMethod  string
 
 	//System parameter name in HTTP header
@@ -27,6 +28,7 @@ type Config struct {
 
 func NewConfig() *Config {
 	return &Config{
+		GatewayPath: "/gw/json",
 		HttpMethod: "POST",
 
 		//System parameter name in HTTP header
@@ -52,6 +54,11 @@ func (config *Config) SetDisableSSL(disableSSL bool) *Config {
 
 func (config *Config) SetGatewayHost(gatewayHost string) *Config {
 	config.GatewayHost = gatewayHost
+	return config
+}
+
+func (config *Config) SetGatewayPath(gatewayPath string) *Config {
+	config.GatewayPath = gatewayPath
 	return config
 }
 
