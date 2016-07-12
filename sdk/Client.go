@@ -8,10 +8,6 @@ import (
 	"net/http"
 )
 
-var DefaultLogger logger.LoggerInterface = &logger.Logger{
-	Level: logger.InfoLevel,
-}
-
 type Client struct {
 	HttpClient     *http.Client
 	RequestBuilder *RequestBuilder
