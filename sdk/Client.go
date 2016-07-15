@@ -14,13 +14,15 @@ type Client struct {
 }
 
 func NewClient() *Client {
-	return &Client{
+	var client = &Client{
 		HttpClient: http.DefaultClient,
 		RequestBuilder: &RequestBuilder{
-			Config:     model.NewConfig(),
+			Config:     &model.Config{},
 			Credential: &model.Credential{},
 		},
 	}
+	client.RequestBuilder.Config.SetDefaultOption()
+	return client
 }
 
 func SetDefaultLogger(logger logger.LoggerInterface) {

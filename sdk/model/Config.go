@@ -1,45 +1,38 @@
 package model
 
 type Config struct {
-	//platform address
-	DisableSSL           bool
+	DisableSSL           bool //platform address
 	GatewayHost          string
 	GatewayPath          string
 	HttpMethod           string
-	//System parameter name in HTTP header
-	AppKeyFieldName      string
+	AppKeyFieldName      string //System parameter name in HTTP header
 	AppVersionFieldName  string
 	AppMarketIdFieldName string
 	DeviceIdFieldName    string
 	SessionIdFieldName   string
 	SignFieldName        string
-	//System parameter name in HTTP body
-	ApiFieldName         string
+	ApiFieldName         string //System parameter name in HTTP body
 	ParamsFieldName      string
 	TimestampFieldName   string
 	VersionFieldName     string
-	//System parameter value
-	AppVersionValue      string
+	AppVersionValue      string //System parameter value
 	AppMarketIdValue     string
 }
 
-func NewConfig() *Config {
-	return &Config{
-		GatewayPath:          "/gw/json",
-		HttpMethod:           "POST",
-		//System parameter name in HTTP header
-		AppKeyFieldName:      "OA-App-Key",
-		AppVersionFieldName:  "OA-App-Version",
-		AppMarketIdFieldName: "OA-App-Market-ID",
-		DeviceIdFieldName:    "OA-Device-Id",
-		SessionIdFieldName:   "OA-Session-Id",
-		SignFieldName:        "OA-Sign",
-		//System parameter name in HTTP body
-		ApiFieldName:         "api",
-		ParamsFieldName:      "params",
-		TimestampFieldName:   "timestamp",
-		VersionFieldName:     "version",
-	}
+func (config *Config) SetDefaultOption() *Config {
+	config.GatewayPath = "/gw/json"
+	config.HttpMethod = "POST"
+	config.AppKeyFieldName = "OA-App-Key"
+	config.AppVersionFieldName = "OA-App-Version"
+	config.AppMarketIdFieldName = "OA-App-Market-ID"
+	config.DeviceIdFieldName = "OA-Device-Id"
+	config.SessionIdFieldName = "OA-Session-Id"
+	config.SignFieldName = "OA-Sign"
+	config.ApiFieldName = "api"
+	config.ParamsFieldName = "params"
+	config.TimestampFieldName = "timestamp"
+	config.VersionFieldName = "version"
+	return config
 }
 
 func (config *Config) SetDisableSSL(disableSSL bool) *Config {
