@@ -2,11 +2,10 @@ package model
 
 type Config struct {
 	//platform address
-	DisableSSL  bool
-	GatewayHost string
-	GatewayPath string
-	HttpMethod  string
-
+	DisableSSL           bool
+	GatewayHost          string
+	GatewayPath          string
+	HttpMethod           string
 	//System parameter name in HTTP header
 	AppKeyFieldName      string
 	AppVersionFieldName  string
@@ -14,23 +13,20 @@ type Config struct {
 	DeviceIdFieldName    string
 	SessionIdFieldName   string
 	SignFieldName        string
-
 	//System parameter name in HTTP body
-	ApiFieldName       string
-	ParamsFieldName    string
-	TimestampFieldName string
-	VersionFieldName   string
-
+	ApiFieldName         string
+	ParamsFieldName      string
+	TimestampFieldName   string
+	VersionFieldName     string
 	//System parameter value
-	AppVersionValue  string
-	AppMarketIdValue string
+	AppVersionValue      string
+	AppMarketIdValue     string
 }
 
 func NewConfig() *Config {
 	return &Config{
-		GatewayPath: "/gw/json",
-		HttpMethod:  "POST",
-
+		GatewayPath:          "/gw/json",
+		HttpMethod:           "POST",
 		//System parameter name in HTTP header
 		AppKeyFieldName:      "OA-App-Key",
 		AppVersionFieldName:  "OA-App-Version",
@@ -38,12 +34,11 @@ func NewConfig() *Config {
 		DeviceIdFieldName:    "OA-Device-Id",
 		SessionIdFieldName:   "OA-Session-Id",
 		SignFieldName:        "OA-Sign",
-
 		//System parameter name in HTTP body
-		ApiFieldName:       "api",
-		ParamsFieldName:    "params",
-		TimestampFieldName: "timestamp",
-		VersionFieldName:   "version",
+		ApiFieldName:         "api",
+		ParamsFieldName:      "params",
+		TimestampFieldName:   "timestamp",
+		VersionFieldName:     "version",
 	}
 }
 
