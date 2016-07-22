@@ -62,7 +62,7 @@ func (rb *RequestBuilder) getDeviceId() (string, error) {
 		return "", err
 	}
 	if len(interfaces) < 2 {
-		errMsg := "Amount of net interfaces is less than 2"
+		errMsg := "sdk: amount of net interfaces is less than 2"
 		DefaultLogger.Error(errMsg)
 		return "", errors.New(errMsg)
 	}
