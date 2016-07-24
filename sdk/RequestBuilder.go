@@ -83,6 +83,9 @@ func (rb *RequestBuilder) getGatewayUrl() string {
 }
 
 func (rb *RequestBuilder) getParamsJson(params interface{}) (string, error) {
+	if params == nil {
+		return "", nil
+	}
 	jsonBytes, err := json.Marshal(params)
 	if  err != nil {
 		DefaultLogger.Error("Api parameter can not encode as json. Json encoder said: " + err.Error())

@@ -55,7 +55,7 @@ func (client *Client) CallApi(api string, version string, params interface{}, re
 	}
 
 	//type casting
-	if returnDataPointer != nil {
+	if apiResult.Data != nil && returnDataPointer != nil {
 		responseDataBytes, _ := json.Marshal(apiResult.Data)
 		if err = json.Unmarshal(responseDataBytes, returnDataPointer); err != nil {
 			DefaultLogger.Error("Failed to cast return data type")
