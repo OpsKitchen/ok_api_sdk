@@ -37,7 +37,7 @@ func (rb *RequestBuilder) Build(api string, version string, params interface{}) 
 	DefaultLogger.Debug("Request body: " + requestBody)
 
 	//init http request
-	request, err := http.NewRequest(rb.Config.HttpMethod, gatewayUrl, strings.NewReader(requestBody));
+	request, err := http.NewRequest(rb.Config.HttpMethod, gatewayUrl, strings.NewReader(requestBody))
 	if err != nil {
 		DefaultLogger.Error("Failed to create http request object: " + err.Error())
 		return nil, err
@@ -87,7 +87,7 @@ func (rb *RequestBuilder) getParamsJson(params interface{}) (string, error) {
 		return "", nil
 	}
 	jsonBytes, err := json.Marshal(params)
-	if  err != nil {
+	if err != nil {
 		DefaultLogger.Error("Api parameter can not encode as json. Json encoder said: " + err.Error())
 		return "", err
 	}
@@ -98,7 +98,7 @@ func (rb *RequestBuilder) getPostBody(api string, version string, paramJson stri
 	str := fmt.Sprintf("%s&%s&%s", rb.Config.ApiFieldName+"="+api, rb.Config.VersionFieldName+"="+version,
 		rb.Config.TimestampFieldName+"="+rb.getTimestamp())
 	if paramJson != "null" {
-		str += "&" + rb.Config.ParamsFieldName+"="+paramJson
+		str += "&" + rb.Config.ParamsFieldName + "=" + paramJson
 	}
 	return str
 }
