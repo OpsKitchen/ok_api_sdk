@@ -97,7 +97,7 @@ func (rb *RequestBuilder) getParamsJson(params interface{}) (string, error) {
 func (rb *RequestBuilder) getPostBody(api string, version string, paramJson string, timestamp string) string {
 	str := fmt.Sprintf("%s&%s&%s", rb.Config.ApiFieldName+"="+api, rb.Config.VersionFieldName+"="+version,
 		rb.Config.TimestampFieldName+"="+rb.getTimestamp())
-	if paramJson != "null" {
+	if paramJson != "" {
 		str += "&" + rb.Config.ParamsFieldName + "=" + paramJson
 	}
 	return str
