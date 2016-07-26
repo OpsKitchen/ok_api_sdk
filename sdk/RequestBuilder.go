@@ -3,6 +3,7 @@ package sdk
 import (
 	"crypto/md5"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/OpsKitchen/ok_api_sdk_go/sdk/model"
 	"io"
@@ -55,12 +56,19 @@ func (rb *RequestBuilder) Build(api string, version string, params interface{}) 
 }
 
 func (rb *RequestBuilder) getDeviceId() (string, error) {
-	eth, err := net.InterfaceByIndex(2)
+	interfaces, err := net.Interfaces()
 	if err != nil {
-		DefaultLogger.Error("Failed to get the first ethernet interface: " + err.Error())
+		DefaultLogger.Error("Failed to get the interface list: " + err.Error())
 		return "", err
 	}
-	return eth.HardwareAddr.String(), nil
+	for _, netInterface := range interfaces {
+		if netInterface.Flags&net.FlagBroadcast != 0 {
+			return netInterface.HardwareAddr.String(), nil
+		}
+	}
+	errMsg := "No ethernet interface found"
+	DefaultLogger.Error(errMsg)
+	return "", errors.New(errMsg)
 }
 
 func (rb *RequestBuilder) getGatewayUrl() string {
