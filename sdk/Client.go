@@ -2,7 +2,6 @@ package sdk
 
 import (
 	"encoding/json"
-	"github.com/OpsKitchen/ok_api_sdk_go/sdk/di/logger"
 	"github.com/OpsKitchen/ok_api_sdk_go/sdk/model"
 	"io/ioutil"
 	"net/http"
@@ -11,22 +10,6 @@ import (
 type Client struct {
 	HttpClient     *http.Client
 	RequestBuilder *RequestBuilder
-}
-
-func NewClient() *Client {
-	client := &Client{
-		HttpClient: http.DefaultClient,
-		RequestBuilder: &RequestBuilder{
-			Config:     &model.Config{},
-			Credential: &model.Credential{},
-		},
-	}
-	client.RequestBuilder.Config.SetDefaultOption()
-	return client
-}
-
-func SetDefaultLogger(logger logger.LoggerInterface) {
-	DefaultLogger = logger
 }
 
 func (client *Client) CallApi(api string, version string, params interface{}) (*model.ApiResult, error) {
