@@ -5,6 +5,7 @@ import (
 	"github.com/OpsKitchen/ok_api_sdk_go/sdk/model"
 	"io/ioutil"
 	"net/http"
+	"errors"
 )
 
 type Client struct {
@@ -21,20 +22,23 @@ func (client *Client) CallApi(api string, version string, params interface{}) (*
 
 	response, err := client.HttpClient.Do(request)
 	if err != nil {
-		DefaultLogger.Error("Failed to do http communication: " + err.Error())
-		return nil, err
+		errMsg := "sdk: http communication error: " + err.Error()
+		DefaultLogger.Error(errMsg)
+		return nil, errors.New(errMsg)
 	}
 
 	defer response.Body.Close()
 	responseBodyBytes, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		DefaultLogger.Error("Failed to read response body: " + err.Error())
-		return nil, err
+		errMsg := "sdk: can not read response body: " + err.Error()
+		DefaultLogger.Error(errMsg)
+		return nil, errors.New(errMsg)
 	}
-	DefaultLogger.Debug("Response body: " + string(responseBodyBytes))
+	DefaultLogger.Debug("[API SDK] Response body: " + string(responseBodyBytes))
 	if err := json.Unmarshal(responseBodyBytes, &apiResult); err != nil {
-		DefaultLogger.Error("Reponse body is not valid json.")
-		return nil, err
+		errMsg := "sdk: can not parse response body, not a valid json."
+		DefaultLogger.Error(errMsg)
+		return nil, errors.New(errMsg)
 	}
 	return apiResult, nil
 }

@@ -33,14 +33,15 @@ func (rb *RequestBuilder) Build(api string, version string, params interface{}) 
 	timestamp := rb.getTimestamp()
 	gatewayUrl := rb.getGatewayUrl()
 	requestBody := rb.getPostBody(api, version, paramJson, timestamp)
-	DefaultLogger.Debug("Gateway url: " + gatewayUrl)
-	DefaultLogger.Debug("Request body: " + requestBody)
+	DefaultLogger.Debug("[API SDK] Gateway url: " + gatewayUrl)
+	DefaultLogger.Debug("[API SDK] Request body: " + requestBody)
 
 	//init http request
 	request, err := http.NewRequest(rb.Config.HttpMethod, gatewayUrl, strings.NewReader(requestBody))
 	if err != nil {
-		DefaultLogger.Error("Failed to create http request object: " + err.Error())
-		return nil, err
+		errMsg := "sdk: can not create http request object: " + err.Error()
+		DefaultLogger.Error(errMsg)
+		return nil, errors.New(errMsg)
 	}
 
 	//set headers
@@ -51,22 +52,23 @@ func (rb *RequestBuilder) Build(api string, version string, params interface{}) 
 	request.Header.Set(rb.Config.DeviceIdFieldName, deviceId)
 	request.Header.Set(rb.Config.SessionIdFieldName, rb.Credential.SessionId)
 	request.Header.Set(rb.Config.SignFieldName, rb.getSign(api, version, paramJson, timestamp))
-	DefaultLogger.Debug("Request header:", request.Header)
+	DefaultLogger.Debug("[API SDK] Request header:", request.Header)
 	return request, nil
 }
 
 func (rb *RequestBuilder) getDeviceId() (string, error) {
 	interfaces, err := net.Interfaces()
 	if err != nil {
-		DefaultLogger.Error("Failed to get the interface list: " + err.Error())
-		return "", err
+		errMsg := "sdk: can not get the interface list: " + err.Error()
+		DefaultLogger.Error(errMsg)
+		return "", errors.New(errMsg)
 	}
 	for _, netInterface := range interfaces {
 		if netInterface.Flags&net.FlagBroadcast != 0 {
 			return netInterface.HardwareAddr.String(), nil
 		}
 	}
-	errMsg := "No ethernet interface found"
+	errMsg := "sdk: no ethernet interface found"
 	DefaultLogger.Error(errMsg)
 	return "", errors.New(errMsg)
 }
@@ -90,8 +92,9 @@ func (rb *RequestBuilder) getParamsJson(params interface{}) (string, error) {
 	}
 	jsonBytes, err := json.Marshal(params)
 	if err != nil {
-		DefaultLogger.Error("Api parameter can not encode as json. Json encoder said: " + err.Error())
-		return "", err
+		errMsg := "sdk: can not encode api parameter as json: " + err.Error()
+		DefaultLogger.Error(errMsg)
+		return "", errors.New(errMsg)
 	}
 	return string(jsonBytes), nil
 }
