@@ -2,10 +2,10 @@ package sdk
 
 import (
 	"encoding/json"
+	"errors"
 	"github.com/OpsKitchen/ok_api_sdk_go/sdk/model"
 	"io/ioutil"
 	"net/http"
-	"errors"
 )
 
 type Client struct {
