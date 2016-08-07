@@ -20,6 +20,7 @@ type Config struct {
 }
 
 func (config *Config) SetDefaultOption() *Config {
+	config.GatewayPath = "/gw"
 	config.HttpMethod = "POST"
 	config.AppKeyFieldName = "OA-App-Key"
 	config.AppVersionFieldName = "OA-App-Version"
