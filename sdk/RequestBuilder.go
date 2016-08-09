@@ -100,12 +100,12 @@ func (rb *RequestBuilder) getParamsJson(params interface{}) (string, error) {
 }
 
 func (rb *RequestBuilder) getPostBody(api string, version string, paramJson string, timestamp string) string {
-	str := fmt.Sprintf("%s&%s&%s", rb.Config.ApiFieldName+"="+api, rb.Config.VersionFieldName+"="+version,
-		rb.Config.TimestampFieldName+"="+rb.getTimestamp())
-	if paramJson != "" {
-		str += "&" + rb.Config.ParamsFieldName + "=" + paramJson
-	}
-	return str
+	values := &url.Values{}
+	values.Add(rb.Config.ApiFieldName, api)
+	values.Add(rb.Config.VersionFieldName, version)
+	values.Add(rb.Config.TimestampFieldName, timestamp)
+	values.Add(rb.Config.ParamsFieldName, paramJson)
+	return values.Encode()
 }
 
 func (rb *RequestBuilder) getSign(api string, version string, paramJson string, timestamp string) string {
