@@ -4,7 +4,6 @@ type Config struct {
 	DisableSSL           bool //platform address
 	GatewayHost          string
 	GatewayPath          string
-	HttpMethod           string
 	AppKeyFieldName      string //System parameter name in HTTP header
 	AppVersionFieldName  string
 	AppMarketIdFieldName string
@@ -20,8 +19,6 @@ type Config struct {
 }
 
 func (config *Config) SetDefaultOption() *Config {
-	config.GatewayPath = "/gw"
-	config.HttpMethod = "POST"
 	config.AppKeyFieldName = "OA-App-Key"
 	config.AppVersionFieldName = "OA-App-Version"
 	config.AppMarketIdFieldName = "OA-App-Market-ID"
@@ -47,11 +44,6 @@ func (config *Config) SetGatewayHost(gatewayHost string) *Config {
 
 func (config *Config) SetGatewayPath(gatewayPath string) *Config {
 	config.GatewayPath = gatewayPath
-	return config
-}
-
-func (config *Config) SetHttpMethod(httpMethod string) *Config {
-	config.HttpMethod = httpMethod
 	return config
 }
 

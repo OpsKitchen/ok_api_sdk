@@ -37,7 +37,7 @@ func (rb *RequestBuilder) Build(api string, version string, params interface{}) 
 	DefaultLogger.Debug("[API SDK] Request body: " + requestBody)
 
 	//init http request
-	request, err := http.NewRequest(rb.Config.HttpMethod, gatewayUrl, strings.NewReader(requestBody))
+	request, err := http.NewRequest(http.MethodPost, gatewayUrl, strings.NewReader(requestBody))
 	if err != nil {
 		errMsg := "sdk: can not create http request object: " + err.Error()
 		DefaultLogger.Error(errMsg)
