@@ -4,6 +4,7 @@ type Config struct {
 	DisableSSL           bool //platform address
 	GatewayHost          string
 	GatewayPath          string
+	GatewayPort          int
 	AppKeyFieldName      string //System parameter name in HTTP header
 	AppVersionFieldName  string
 	AppMarketIdFieldName string
@@ -44,6 +45,11 @@ func (config *Config) SetGatewayHost(gatewayHost string) *Config {
 
 func (config *Config) SetGatewayPath(gatewayPath string) *Config {
 	config.GatewayPath = gatewayPath
+	return config
+}
+
+func (config *Config) SetGatewayPort(gatewayPort int) *Config {
+	config.GatewayPort = gatewayPort
 	return config
 }
 

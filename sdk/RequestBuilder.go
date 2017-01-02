@@ -75,13 +75,17 @@ func (rb *RequestBuilder) getDeviceId() (string, error) {
 
 func (rb *RequestBuilder) getGatewayUrl() string {
 	urlObj := url.URL{
-		Host: rb.Config.GatewayHost,
 		Path: rb.Config.GatewayPath,
 	}
 	if rb.Config.DisableSSL {
 		urlObj.Scheme = "http"
 	} else {
 		urlObj.Scheme = "https"
+	}
+	if rb.Config.GatewayPort != 0 {//port number configured
+		urlObj.Host = fmt.Sprintf("%s:%s", rb.Config.GatewayHost, strconv.Itoa(rb.Config.GatewayPort))
+	} else {
+		urlObj.Host = rb.Config.GatewayHost
 	}
 	return urlObj.String()
 }
