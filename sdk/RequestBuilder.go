@@ -59,25 +59,23 @@ func (rb *RequestBuilder) Build(api string, version string, params interface{}) 
 }
 
 func (rb *RequestBuilder) getDeviceId() (string, error) {
-	uuidFile := "/root/.ok_agent/uuid"
-	_, err := os.Stat(uuidFile)
-	if err != nil {
-		instanceId := uuid.NewV4().String()
-		err := ioutil.WriteFile(uuidFile, []byte(instanceId), 0644)
-		if err != nil {
+	uuidFile := rb.Config.DeviceIdFilePath
+	if _, err := os.Stat(uuidFile); err != nil {
+		deviceId := uuid.NewV4().String()
+		if err := ioutil.WriteFile(uuidFile, []byte(deviceId), 0644); err != nil {
 			errMsg := "sdk: failed to write uuid file [" + uuidFile + "]: " + err.Error()
 			DefaultLogger.Error(errMsg)
 			return "", errors.New(errMsg)
 		}
-		return instanceId, nil
+		return deviceId, nil
 	} else {
-		instanceId, err := ioutil.ReadFile(uuidFile)
+		deviceId, err := ioutil.ReadFile(uuidFile)
 		if err != nil {
 			errMsg := "sdk: failed to read uuid file [" + uuidFile + "]: " + err.Error()
 			DefaultLogger.Error(errMsg)
 			return "", errors.New(errMsg)
 		}
-		return string(instanceId), nil
+		return string(deviceId), nil
 	}
 }
 

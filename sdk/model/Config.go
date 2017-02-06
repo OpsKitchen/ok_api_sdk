@@ -17,6 +17,7 @@ type Config struct {
 	VersionFieldName     string
 	AppVersionValue      string //System parameter value
 	AppMarketIdValue     string
+	DeviceIdFilePath     string // uuid file
 }
 
 func (config *Config) SetDefaultOption() *Config {
@@ -30,6 +31,7 @@ func (config *Config) SetDefaultOption() *Config {
 	config.ParamsFieldName = "params"
 	config.TimestampFieldName = "timestamp"
 	config.VersionFieldName = "version"
+	config.DeviceIdFilePath = "/etc/uuid_4_ok_api"
 	return config
 }
 
