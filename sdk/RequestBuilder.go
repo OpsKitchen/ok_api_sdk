@@ -7,12 +7,14 @@ import (
 	"fmt"
 	"github.com/OpsKitchen/ok_api_sdk_go/sdk/model"
 	"io"
-	"net"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"time"
+	"github.com/satori/go.uuid"
+	"io/ioutil"
+	"os"
 )
 
 type RequestBuilder struct {
@@ -57,20 +59,26 @@ func (rb *RequestBuilder) Build(api string, version string, params interface{}) 
 }
 
 func (rb *RequestBuilder) getDeviceId() (string, error) {
-	interfaces, err := net.Interfaces()
+	uuidFile := "/root/.ok_agent/uuid"
+	_, err := os.Stat(uuidFile)
 	if err != nil {
-		errMsg := "sdk: can not get the interface list: " + err.Error()
-		DefaultLogger.Error(errMsg)
-		return "", errors.New(errMsg)
-	}
-	for _, netInterface := range interfaces {
-		if netInterface.Flags&net.FlagBroadcast != 0 {
-			return netInterface.HardwareAddr.String(), nil
+		instanceId := uuid.NewV4().String()
+		err := ioutil.WriteFile(uuidFile, []byte(instanceId), 0644)
+		if err != nil {
+			errMsg := "sdk: failed to write uuid file [" + uuidFile + "]: " + err.Error()
+			DefaultLogger.Error(errMsg)
+			return "", errors.New(errMsg)
 		}
+		return instanceId, nil
+	} else {
+		instanceId, err := ioutil.ReadFile(uuidFile)
+		if err != nil {
+			errMsg := "sdk: failed to read uuid file [" + uuidFile + "]: " + err.Error()
+			DefaultLogger.Error(errMsg)
+			return "", errors.New(errMsg)
+		}
+		return string(instanceId), nil
 	}
-	errMsg := "sdk: no ethernet interface found"
-	DefaultLogger.Error(errMsg)
-	return "", errors.New(errMsg)
 }
 
 func (rb *RequestBuilder) getGatewayUrl() string {
