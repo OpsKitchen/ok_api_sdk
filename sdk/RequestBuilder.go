@@ -27,14 +27,20 @@ func (rb *RequestBuilder) Build(api string, version string, params interface{}) 
 	if err != nil {
 		return nil, err
 	}
-	deviceId, err := rb.getDeviceId()
-	if err != nil {
-		return nil, err
+
+	deviceId := rb.Credential.DeviceId
+	if rb.Credential.DeviceId == "" {
+		sdkDeviceId, err := rb.getDeviceId()
+		if err != nil {
+			return nil, err
+		}
+		deviceId = sdkDeviceId
 	}
 
 	timestamp := rb.getTimestamp()
 	gatewayUrl := rb.getGatewayUrl()
 	requestBody := rb.getPostBody(api, version, paramJson, timestamp)
+
 	DefaultLogger.Debug("[API SDK] Gateway url: " + gatewayUrl)
 	DefaultLogger.Debug("[API SDK] Request body: " + requestBody)
 
@@ -61,7 +67,7 @@ func (rb *RequestBuilder) Build(api string, version string, params interface{}) 
 func (rb *RequestBuilder) getDeviceId() (string, error) {
 	uuidFile := rb.Config.DeviceIdFilePath
 	if _, err := os.Stat(uuidFile); err != nil {
-		deviceId := uuid.NewV4().String()
+		deviceId := uuid.NewV1().String()
 		if err := ioutil.WriteFile(uuidFile, []byte(deviceId), 0644); err != nil {
 			errMsg := "sdk: failed to write uuid file [" + uuidFile + "]: " + err.Error()
 			DefaultLogger.Error(errMsg)
