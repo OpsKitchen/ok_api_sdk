@@ -42,7 +42,9 @@ func (rb *RequestBuilder) Build(api string, version string, params interface{}) 
 	requestBody := rb.getPostBody(api, version, paramJson, timestamp)
 
 	DefaultLogger.Debug("[API SDK] Gateway url: " + gatewayUrl)
-	DefaultLogger.Debug("[API SDK] Request body: " + requestBody)
+	DefaultLogger.Debug("[API SDK] Api: " + api + " " + version)
+	DefaultLogger.Debug("[API SDK] Timestamp: " + timestamp)
+	DefaultLogger.Debug("[API SDK] Request param: " + paramJson)
 
 	//init http request
 	request, err := http.NewRequest(http.MethodPost, gatewayUrl, strings.NewReader(requestBody))
@@ -132,5 +134,5 @@ func (rb *RequestBuilder) getSign(api string, version string, paramJson string, 
 }
 
 func (rb *RequestBuilder) getTimestamp() string {
-	return strconv.FormatInt(time.Now().Unix(), 10)
+	return strconv.FormatInt(time.Now().UnixNano()/1e6, 10)
 }
