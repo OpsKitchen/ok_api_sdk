@@ -6,15 +6,15 @@ import (
 	"errors"
 	"fmt"
 	"github.com/OpsKitchen/ok_api_sdk_go/sdk/model"
+	"github.com/satori/go.uuid"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"net/url"
+	"os"
 	"strconv"
 	"strings"
 	"time"
-	"github.com/satori/go.uuid"
-	"io/ioutil"
-	"os"
 )
 
 type RequestBuilder struct {
@@ -61,7 +61,7 @@ func (rb *RequestBuilder) Build(api string, version string, params interface{}) 
 	request.Header.Set(rb.Config.AppVersionFieldName, rb.Config.AppVersionValue)
 	request.Header.Set(rb.Config.DeviceIdFieldName, deviceId)
 	request.Header.Set(rb.Config.SessionIdFieldName, rb.Credential.SessionId)
-	request.Header.Set(rb.Config.SignFieldName, rb.getSign(api, version, paramJson, timestamp))
+	request.Header.Set(rb.Config.SignFieldName, rb.getSign(deviceId, rb.Credential.SessionId, api, version, paramJson, timestamp))
 	DefaultLogger.Debug("[API SDK] Request header:", request.Header)
 	return request, nil
 }
@@ -96,7 +96,7 @@ func (rb *RequestBuilder) getGatewayUrl() string {
 	} else {
 		urlObj.Scheme = "https"
 	}
-	if rb.Config.GatewayPort != 0 {//port number configured
+	if rb.Config.GatewayPort != 0 { //port number configured
 		urlObj.Host = fmt.Sprintf("%s:%s", rb.Config.GatewayHost, strconv.Itoa(rb.Config.GatewayPort))
 	} else {
 		urlObj.Host = rb.Config.GatewayHost
@@ -126,13 +126,14 @@ func (rb *RequestBuilder) getPostBody(api string, version string, paramJson stri
 	return values.Encode()
 }
 
-func (rb *RequestBuilder) getSign(api string, version string, paramJson string, timestamp string) string {
+func (rb *RequestBuilder) getSign(deviceId, sessionId, api, version, paramJson, timestamp string) string {
 	hashObj := md5.New()
-	stringToBeSign := rb.Credential.Secret + api + version + paramJson + timestamp
+	stringToBeSign := rb.Credential.Secret + deviceId + sessionId + api + version + paramJson + timestamp
 	io.WriteString(hashObj, stringToBeSign)
 	return fmt.Sprintf("%x", hashObj.Sum(nil))
 }
 
+//get timestamp in microsecond
 func (rb *RequestBuilder) getTimestamp() string {
-	return strconv.FormatInt(time.Now().UnixNano()/1e6, 10)
+	return strconv.FormatInt(time.Now().UnixNano()/1e3, 10)
 }
