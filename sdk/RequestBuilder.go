@@ -106,7 +106,7 @@ func (rb *RequestBuilder) getGatewayUrl() string {
 
 func (rb *RequestBuilder) getParamsJson(params interface{}) (string, error) {
 	if params == nil {
-		return "", nil
+		return "null", nil
 	}
 	jsonBytes, err := json.Marshal(params)
 	if err != nil {
